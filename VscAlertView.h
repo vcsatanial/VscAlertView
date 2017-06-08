@@ -7,11 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
+
+#define UIColorFromRGB(rgbValue) [UIColor \
+colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
+green:((float)((rgbValue & 0xFF00) >> 8))/255.0 \
+blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 @class VscAlertView;
 @class VscButton;
 @protocol VscAlertDelegate
 @optional
 -(void)vsc_alertView:(VscAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
+@end
+@protocol VscAlertDataSource <NSObject>
+@optional
+-(VscButton *)vsc_alertView:(VscAlertView *)alertView buttonNeedToResign:(VscButton *)buttonCell buttonIndex:(NSInteger)buttonIndex;
 @end
 typedef void(^VscAlertBlock)(VscAlertView *alertView,NSInteger buttonIndex);
 typedef VscButton *(^VscButtonBlock)(VscButton *cell,NSInteger buttonIndex);
@@ -28,6 +37,8 @@ typedef VscButton *(^VscButtonBlock)(VscButton *cell,NSInteger buttonIndex);
 @property (nonatomic,strong) UIColor *msgColor;
 //代理 可通过代理传值或者Block
 @property (nonatomic,weak) id<VscAlertDelegate>delegate;
+//数据源 可通过数据源或者Block
+@property (nonatomic,weak) id<VscAlertDataSource>dataSource;
 //按键的数组
 @property (nonatomic,strong,readonly) NSArray *buttonsArray;
 /**
@@ -35,7 +46,7 @@ typedef VscButton *(^VscButtonBlock)(VscButton *cell,NSInteger buttonIndex);
 
  @param title title信息可为空
  @param message message新课可为空,当title,message都为空只有按键
- @param buttonsArray 按键的数组(NSString元素)
+ @param otherButtonTitles 按键的名称
  */
 -(instancetype)initWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSString *)otherButtonTitles, ...;
 
@@ -72,6 +83,8 @@ typedef VscButton *(^VscButtonBlock)(VscButton *cell,NSInteger buttonIndex);
 @property (nonatomic,strong) UIColor *textColor;
 //是否文本加粗
 @property (nonatomic,assign) BOOL isBold;
+//获取到使用VscButton的VscAlertView
+@property (nonatomic,weak) VscAlertView *superAlertView;
 -(void)defaultStyle;
 -(void)displayFrames;
 @end
