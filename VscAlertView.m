@@ -40,6 +40,9 @@ UIImage *imageWithColor(UIColor *color){
 @end
 static NSString *myId = @"AlertViewTableCell";
 @implementation VscAlertView
+-(void)dealloc{
+    NSLog(@"VscAlertView dealloc");
+}
 -(void)setButtonHeight:(CGFloat)buttonHeight{
     if (buttonHeight < 30) {
         buttonHeight = 30;
@@ -142,12 +145,13 @@ static NSString *myId = @"AlertViewTableCell";
             _tableView.backgroundView.backgroundColor = [UIColor clearColor];
             _tableView.dataSource = self;
             _tableView.delegate = self;
+            [_tableView flashScrollIndicators];
             _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
             [backgroundView addSubview:_tableView];
             [_tableView registerClass:[VscButton class] forCellReuseIdentifier:myId];
         }
         _tableView.bounces = NO;
-    
+        
         CGRect frame = backgroundView.frame;
         frame.size.height = CGRectGetMaxY(_tableView.frame);
         frame.origin.y = (self.frame.size.height - frame.size.height)/2;
@@ -158,9 +162,9 @@ static NSString *myId = @"AlertViewTableCell";
         }
         for (int index = 0; index < _buttonsArray.count; index ++) {
             float width = backgroundView.frame.size.width / 2;
-            UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(index * backgroundView.frame.size.width / 2, height,_buttonsArray.count == 1 ? width * 2 : width , _buttonHeight)];
+            UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(index * backgroundView.frame.size.width / 2, height  + 1,_buttonsArray.count == 1 ? width * 2 : width , _buttonHeight)];
             if (index == 0) {
-                button.frame = CGRectMake(0, height, (_buttonsArray.count == 1 ? width * 2 : width)-0.5, _buttonHeight);
+                button.frame = CGRectMake(0, height + 1, (_buttonsArray.count == 1 ? width * 2 : width) - 0.5, _buttonHeight);
             }
             button.tag = 1000 + index;
             [button addTarget:self action:@selector(alertButtonClick:) forControlEvents:64];
@@ -180,9 +184,17 @@ static NSString *myId = @"AlertViewTableCell";
             [button setTitle:title forState:0];
             [button setTitleColor:UIColorFromRGB(0x4b95f2) forState:0];
             
+            VscButton *cell = [[VscButton alloc] init];
+            BOOL customDesign = NO;
+            if (self.dataSource) {
+                cell = [self.dataSource vsc_alertView:self buttonNeedToResign:cell buttonIndex:index];
+                customDesign = YES;
+            }
             if (self.btnBlock) {
-                VscButton *cell = [[VscButton alloc] init];
                 cell = self.btnBlock(cell,index);
+                customDesign = YES;
+            }
+            if (customDesign) {
                 UIColor *color = cell.textColor;
                 if (!color) {
                     color = UIColorFromRGB(0x4b95f2);
@@ -260,9 +272,13 @@ static NSString *myId = @"AlertViewTableCell";
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     VscButton *cell = [tableView dequeueReusableCellWithIdentifier:myId];
+    cell.superAlertView = self;
     NSAssert([_buttonsArray[indexPath.row] isKindOfClass:[NSString class]], @"数组中必须是NSString类型");
-    cell.text = _buttonsArray[indexPath.row];
     [cell defaultStyle];
+    cell.text = _buttonsArray[indexPath.row];
+    if (self.dataSource) {
+        cell = [self.dataSource vsc_alertView:self buttonNeedToResign:cell buttonIndex:indexPath.row];
+    }
     if (self.btnBlock) {
         cell = self.btnBlock(cell,indexPath.row);
     }
