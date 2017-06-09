@@ -8,7 +8,7 @@ Pod::Spec.new do |spec|
   spec.homepage         = 'https://github.com/vcsatanial/'
   spec.license          = { :type => 'MIT', :file => 'LICENSE' }
   spec.author           = { 'zhouhongchen' => '116359398@qq.com' }
-  spec.source           = { :git => 'https://github.com/vcsatanial/VscAlertView.git', :tag => '0.0.1' }
+  spec.source           = { :git => 'https://github.com/vcsatanial/VscAlertView.git', :tag => spec.version }
   spec.ios.deployment_target = '8.0'
   spec.source_files = 'VscAlertView/*.{h,m}'
 
