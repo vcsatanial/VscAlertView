@@ -40,9 +40,6 @@ UIImage *imageWithColor(UIColor *color){
 @end
 static NSString *myId = @"AlertViewTableCell";
 @implementation VscAlertView
--(void)dealloc{
-    NSLog(@"VscAlertView dealloc");
-}
 -(void)setButtonHeight:(CGFloat)buttonHeight{
     if (buttonHeight < 30) {
         buttonHeight = 30;
