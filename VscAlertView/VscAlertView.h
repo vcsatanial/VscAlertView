@@ -14,7 +14,7 @@ green:((float)((rgbValue & 0xFF00) >> 8))/255.0 \
 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 @class VscAlertView;
 @class VscButton;
-@protocol VscAlertDelegate
+@protocol VscAlertDelegate <NSObject>
 @optional
 -(void)vsc_alertView:(VscAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
 @end
