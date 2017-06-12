@@ -55,8 +55,10 @@ UIImage *getImageWithColor(UIColor *color){
     [self displayFrames];
 }
 -(void)setImage:(UIImage *)image{
-    imgView.image = image;
-    [self addSubview:imgView];
+    if (image) {
+        imgView.image = image;
+        [self addSubview:imgView];
+    }
     [self displayFrames];
 }
 -(void)setNormalColor:(UIColor *)normalColor{

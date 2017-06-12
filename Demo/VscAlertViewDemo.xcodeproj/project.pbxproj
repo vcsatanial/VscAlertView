@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A07BAF5D1EEE717C00E14D3B /* VscAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = A07BAF571EEE717C00E14D3B /* VscAlertView.m */; };
+		A07BAF5E1EEE717C00E14D3B /* VscButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A07BAF591EEE717C00E14D3B /* VscButton.m */; };
+		A07BAF5F1EEE717C00E14D3B /* VscPressButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A07BAF5C1EEE717C00E14D3B /* VscPressButton.m */; };
 		A082BC781EE7E28100819FD7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A082BC771EE7E28100819FD7 /* main.m */; };
 		A082BC7B1EE7E28100819FD7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A082BC7A1EE7E28100819FD7 /* AppDelegate.m */; };
 		A082BC7E1EE7E28100819FD7 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A082BC7D1EE7E28100819FD7 /* ViewController.m */; };
@@ -15,7 +18,6 @@
 		A082BC861EE7E28100819FD7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A082BC841EE7E28100819FD7 /* LaunchScreen.storyboard */; };
 		A082BC911EE7E28100819FD7 /* VscAlertViewDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A082BC901EE7E28100819FD7 /* VscAlertViewDemoTests.m */; };
 		A082BC9C1EE7E28200819FD7 /* VscAlertViewDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = A082BC9B1EE7E28200819FD7 /* VscAlertViewDemoUITests.m */; };
-		A082BCAC1EE7E30300819FD7 /* VscAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = A082BCAB1EE7E30300819FD7 /* VscAlertView.m */; };
 		A082BCAF1EE7F36500819FD7 /* dollor.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = A082BCAD1EE7F36500819FD7 /* dollor.jpeg */; };
 		A082BCB01EE7F36500819FD7 /* yuan.png in Resources */ = {isa = PBXBuildFile; fileRef = A082BCAE1EE7F36500819FD7 /* yuan.png */; };
 		A082BCB21EE7F4C900819FD7 /* second.png in Resources */ = {isa = PBXBuildFile; fileRef = A082BCB11EE7F4C900819FD7 /* second.png */; };
@@ -39,6 +41,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A07BAF561EEE717C00E14D3B /* VscAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VscAlertView.h; sourceTree = "<group>"; };
+		A07BAF571EEE717C00E14D3B /* VscAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VscAlertView.m; sourceTree = "<group>"; };
+		A07BAF581EEE717C00E14D3B /* VscButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VscButton.h; sourceTree = "<group>"; };
+		A07BAF591EEE717C00E14D3B /* VscButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VscButton.m; sourceTree = "<group>"; };
+		A07BAF5A1EEE717C00E14D3B /* VscColorHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VscColorHeader.h; sourceTree = "<group>"; };
+		A07BAF5B1EEE717C00E14D3B /* VscPressButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VscPressButton.h; sourceTree = "<group>"; };
+		A07BAF5C1EEE717C00E14D3B /* VscPressButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VscPressButton.m; sourceTree = "<group>"; };
 		A082BC731EE7E28100819FD7 /* VscAlertViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VscAlertViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A082BC771EE7E28100819FD7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A082BC791EE7E28100819FD7 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -55,8 +64,6 @@
 		A082BC971EE7E28200819FD7 /* VscAlertViewDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VscAlertViewDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A082BC9B1EE7E28200819FD7 /* VscAlertViewDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VscAlertViewDemoUITests.m; sourceTree = "<group>"; };
 		A082BC9D1EE7E28200819FD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A082BCAA1EE7E30300819FD7 /* VscAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VscAlertView.h; sourceTree = "<group>"; };
-		A082BCAB1EE7E30300819FD7 /* VscAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VscAlertView.m; sourceTree = "<group>"; };
 		A082BCAD1EE7F36500819FD7 /* dollor.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = dollor.jpeg; sourceTree = "<group>"; };
 		A082BCAE1EE7F36500819FD7 /* yuan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yuan.png; sourceTree = "<group>"; };
 		A082BCB11EE7F4C900819FD7 /* second.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = second.png; sourceTree = "<group>"; };
@@ -87,6 +94,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A07BAF551EEE717C00E14D3B /* VscAlertView */ = {
+			isa = PBXGroup;
+			children = (
+				A07BAF561EEE717C00E14D3B /* VscAlertView.h */,
+				A07BAF571EEE717C00E14D3B /* VscAlertView.m */,
+				A07BAF581EEE717C00E14D3B /* VscButton.h */,
+				A07BAF591EEE717C00E14D3B /* VscButton.m */,
+				A07BAF5A1EEE717C00E14D3B /* VscColorHeader.h */,
+				A07BAF5B1EEE717C00E14D3B /* VscPressButton.h */,
+				A07BAF5C1EEE717C00E14D3B /* VscPressButton.m */,
+			);
+			name = VscAlertView;
+			path = ../../VscAlertView;
+			sourceTree = "<group>";
+		};
 		A082BC6A1EE7E28000819FD7 = {
 			isa = PBXGroup;
 			children = (
@@ -114,10 +136,10 @@
 				A082BC7A1EE7E28100819FD7 /* AppDelegate.m */,
 				A082BC7C1EE7E28100819FD7 /* ViewController.h */,
 				A082BC7D1EE7E28100819FD7 /* ViewController.m */,
+				A07BAF551EEE717C00E14D3B /* VscAlertView */,
 				A082BCAD1EE7F36500819FD7 /* dollor.jpeg */,
 				A082BCAE1EE7F36500819FD7 /* yuan.png */,
 				A082BCB11EE7F4C900819FD7 /* second.png */,
-				A082BCA91EE7E30300819FD7 /* VscAlertView */,
 				A082BC7F1EE7E28100819FD7 /* Main.storyboard */,
 				A082BC821EE7E28100819FD7 /* Assets.xcassets */,
 				A082BC841EE7E28100819FD7 /* LaunchScreen.storyboard */,
@@ -152,15 +174,6 @@
 			);
 			path = VscAlertViewDemoUITests;
 			sourceTree = "<group>";
-		};
-		A082BCA91EE7E30300819FD7 /* VscAlertView */ = {
-			isa = PBXGroup;
-			children = (
-				A082BCAA1EE7E30300819FD7 /* VscAlertView.h */,
-				A082BCAB1EE7E30300819FD7 /* VscAlertView.m */,
-			);
-			path = VscAlertView;
-			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -299,9 +312,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A082BCAC1EE7E30300819FD7 /* VscAlertView.m in Sources */,
+				A07BAF5E1EEE717C00E14D3B /* VscButton.m in Sources */,
+				A07BAF5D1EEE717C00E14D3B /* VscAlertView.m in Sources */,
 				A082BC7E1EE7E28100819FD7 /* ViewController.m in Sources */,
 				A082BC7B1EE7E28100819FD7 /* AppDelegate.m in Sources */,
+				A07BAF5F1EEE717C00E14D3B /* VscPressButton.m in Sources */,
 				A082BC781EE7E28100819FD7 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

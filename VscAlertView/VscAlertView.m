@@ -30,6 +30,7 @@ UIImage *imageWithColor(UIColor *color){
     CGFloat _buttonHeight;
 }
 @property (nonatomic,strong) VscAlertView *mySelf;
+//当不调用show方法同时调用Block时,为防止内存不能释放,增加栈block,当成功调用show时,将栈block转化成堆block(ARC)
 @property (nonatomic,copy) VscAlertBlock alertBlock;
 @property (nonatomic,assign) VscAlertBlock alertTempBlock;
 @property (nonatomic,copy) VscButtonBlock btnBlock;
@@ -92,7 +93,6 @@ static NSString *myId = @"AlertViewTableCell";
     msgLabel.textAlignment = 1;
     msgLabel.numberOfLines = 0;
 }
-
 -(void)displayTitle{
     if (_title && ![_title isEqualToString:@""]) {
         [backgroundView addSubview:titleLabel];
@@ -155,29 +155,13 @@ static NSString *myId = @"AlertViewTableCell";
             if (_buttonsArray.count == 2 && index == 0) {
                 width -= 0.5;
             }
-
             VscPressButton *button = [[VscPressButton alloc] initWithFrame:
-                                      CGRectMake(index * backgroundView.frame.size.width / 2,
-                                                 height  + 1,
-                                                 width ,
-                                                 _buttonHeight)];
+                                      CGRectMake(index * backgroundView.frame.size.width / 2,height  + 1,width ,_buttonHeight)];
             button.tag = 1000 + index;
             [button addTarget:self action:@selector(alertButtonClick:) forControlEvents:64];
-//            button.backgroundColor = [UIColor clearColor];
-//            
-//            UIImage *backImg = imageWithColor([[UIColor blackColor] colorWithAlphaComponent:0.05]);
-//            [button setBackgroundImage:backImg forState:1<<0];
             button.highliColor = [[UIColor blackColor] colorWithAlphaComponent:0.05];
-//            UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
-//            UIVisualEffectView *effectView = [[UIVisualEffectView alloc] initWithEffect:effect];
-//            effectView.frame = button.frame;
-//            
-//            [backgroundView addSubview:effectView];
             [backgroundView addSubview: button];
-            
             NSString *title = _buttonsArray[index];
-//            [button setTitle:title forState:0];
-//            [button setTitleColor:UIColorFromRGB(0x4b95f2) forState:0];
             button.text = title;
             VscButton *cell = [[VscButton alloc] init];
             BOOL customDesign = NO;
@@ -194,18 +178,9 @@ static NSString *myId = @"AlertViewTableCell";
                 if (!color) {
                     color = UIColorFromRGB(0x4b95f2);
                 }
-                if (cell.isBold) {
-//                    button.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
-                    button.isBold = YES;
-                }
+                button.isBold = cell.isBold;
                 [button setTitleColor:color forState:0];
-                if (cell.image) {
-//                    [button setImage:cell.image forState:0];
-//                    [button setImageEdgeInsets:UIEdgeInsetsMake(10,-12,10,-25)];
-//                    button.imageView.contentMode = UIViewContentModeScaleAspectFit;
-//                    [button setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
-                    button.image = cell.image;
-                }
+                button.image = cell.image;
             }
         }
         CGRect frame = backgroundView.frame;
@@ -232,8 +207,8 @@ static NSString *myId = @"AlertViewTableCell";
 }
 -(void)show{
     _mySelf = self;
-    _alertBlock = [_alertTempBlock copy];
-    _btnBlock = [_btnTempBlock copy];
+    _alertBlock = _alertTempBlock;
+    _btnBlock  = _btnTempBlock;
     [self displayTitle];
     [self displayMessage];
     [self displayButtons];
@@ -269,7 +244,6 @@ static NSString *myId = @"AlertViewTableCell";
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     VscButton *cell = [tableView dequeueReusableCellWithIdentifier:myId];
     cell.superAlertView = self;
-    NSAssert([_buttonsArray[indexPath.row] isKindOfClass:[NSString class]], @"数组中必须是NSString类型");
     [cell defaultStyle];
     cell.text = _buttonsArray[indexPath.row];
     if (self.dataSource) {
@@ -282,7 +256,6 @@ static NSString *myId = @"AlertViewTableCell";
 }
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     VscButton *vscCell = (VscButton *)cell;
-    vscCell.backgroundColor = [UIColor clearColor];
     [vscCell displayFrames];
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "VscAlertView.h"
+#import "VscColorHeader.h"
 @interface ViewController ()
 
 @end

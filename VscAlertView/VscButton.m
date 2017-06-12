@@ -33,6 +33,7 @@
         displayLabel.backgroundColor = [UIColor clearColor];
         displayLabel.textAlignment = 1;
         displayLabel.font = [UIFont systemFontOfSize:18];
+        self.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:displayLabel];
     }
     return self;
