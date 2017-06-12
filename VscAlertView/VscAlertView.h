@@ -7,13 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VscButton.h"
+#import "VscPressButton.h"
 
-#define UIColorFromRGB(rgbValue) [UIColor \
-colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
-green:((float)((rgbValue & 0xFF00) >> 8))/255.0 \
-blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 @class VscAlertView;
-@class VscButton;
 @protocol VscAlertDelegate <NSObject>
 @optional
 -(void)vsc_alertView:(VscAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
@@ -23,7 +20,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 -(VscButton *)vsc_alertView:(VscAlertView *)alertView buttonNeedToResign:(VscButton *)buttonCell buttonIndex:(NSInteger)buttonIndex;
 @end
 typedef void(^VscAlertBlock)(VscAlertView *alertView,NSInteger buttonIndex);
-typedef VscButton *(^VscButtonBlock)(VscButton *cell,NSInteger buttonIndex);
+typedef VscButton *(^VscButtonBlock)(VscButton *button,NSInteger buttonIndex);
 @interface VscAlertView : UIWindow<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>{
     @public
     //可以自定义title样式
@@ -67,24 +64,4 @@ typedef VscButton *(^VscButtonBlock)(VscButton *cell,NSInteger buttonIndex);
  调用此方法 VscAlertView即会出现 请修改样式的工作均在此方法之前执行
  */
 -(void)show;
-@end
-@interface VscButton : UITableViewCell{
-    @public
-    //可自定义的imgView
-    UIImageView *imgView;
-    //可自定义的displayLabel
-    UILabel *displayLabel;
-}
-//增加自定义的Image 当为Nil时 不展示
-@property (nonatomic,strong) UIImage *image;
-//展示的文本
-@property (nonatomic,copy) NSString *text;
-//按键的字体颜色
-@property (nonatomic,strong) UIColor *textColor;
-//是否文本加粗
-@property (nonatomic,assign) BOOL isBold;
-//获取到使用VscButton的VscAlertView
-@property (nonatomic,weak) VscAlertView *superAlertView;
--(void)defaultStyle;
--(void)displayFrames;
 @end

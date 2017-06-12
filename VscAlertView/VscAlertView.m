@@ -7,10 +7,7 @@
 //
 
 #import "VscAlertView.h"
-#define UIColorFromRGB(rgbValue) [UIColor \
-colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
-green:((float)((rgbValue & 0xFF00) >> 8))/255.0 \
-blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+#import "VscColorHeader.h"
 
 UIImage *imageWithColor(UIColor *color){
     CGRect rect = CGRectMake(0, 0, 1.f, 1.f);
@@ -40,25 +37,12 @@ UIImage *imageWithColor(UIColor *color){
 @end
 static NSString *myId = @"AlertViewTableCell";
 @implementation VscAlertView
--(void)setButtonHeight:(CGFloat)buttonHeight{
-    if (buttonHeight < 30) {
-        buttonHeight = 30;
-    }
-    _buttonHeight = buttonHeight;
-}
 -(instancetype)initWithTitle:(NSString *)title message:(NSString *)message
                             buttonTitles:(NSString *)otherButtonTitles, ...{
-    CGSize allSize = [UIScreen mainScreen].bounds.size;
+    
     self = [super initWithFrame:[UIScreen mainScreen].bounds];
     if (self) {
-        float width = 274;
-        backgroundView = [[UIView alloc] initWithFrame:CGRectMake((allSize.width - width )/ 2, 200, width, 200)];
-        backgroundView.backgroundColor = [UIColor clearColor];
-        backgroundView.layer.cornerRadius = 10;
-        backgroundView.clipsToBounds = YES;
-        [self addSubview:backgroundView];
-        self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.3];
-        self.windowLevel = UIWindowLevelAlert - 1;
+        [self initializeSettings];
         
         _title  = [title copy];
         _message = [message copy];
@@ -76,23 +60,41 @@ static NSString *myId = @"AlertViewTableCell";
             va_end(argumentList);
             _buttonsArray = [array copy];
         }
-        _buttonHeight = 44;
-        
-        _titleColor = [UIColor blackColor];
-        _msgColor = [UIColor blackColor];
-        
-        [self addSubview:_tableView];
+        if (!_buttonsArray || _buttonsArray.count == 0) {
+            _buttonsArray = @[@"确定"];
+        }
     }
     return self;
 }
+-(void)initializeSettings{
+    self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.3];
+    self.windowLevel = UIWindowLevelAlert - 1;
+    
+    _buttonHeight = 44;
+    _titleColor = [UIColor blackColor];
+    _msgColor = [UIColor blackColor];
+    
+    CGSize allSize = [UIScreen mainScreen].bounds.size;
+    float width = 274;
+    backgroundView = [[UIView alloc] initWithFrame:CGRectMake((allSize.width - width )/ 2, 200, width, 200)];
+    backgroundView.backgroundColor = [UIColor clearColor];
+    backgroundView.layer.cornerRadius = 10;
+    backgroundView.clipsToBounds = YES;
+    [self addSubview:backgroundView];
+    
+    titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, backgroundView.frame.size.width - 40, 30)];
+    titleLabel.textColor = _titleColor;
+    titleLabel.textAlignment = 1;
+    titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
+    
+    msgLabel = [[UILabel alloc] init];
+    msgLabel.textColor = _msgColor;
+    msgLabel.textAlignment = 1;
+    msgLabel.numberOfLines = 0;
+}
+
 -(void)displayTitle{
     if (_title && ![_title isEqualToString:@""]) {
-        if (!titleLabel) {
-            titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, backgroundView.frame.size.width - 40, 30)];
-            titleLabel.textColor = _titleColor;
-            titleLabel.textAlignment = 1;
-            titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
-        }
         [backgroundView addSubview:titleLabel];
         titleLabel.text = _title;
     }
@@ -100,12 +102,6 @@ static NSString *myId = @"AlertViewTableCell";
 -(void)displayMessage{
     float lineY = 0.f;
     if (_message && ![_message isEqualToString:@""]) {
-        if (!msgLabel) {
-            msgLabel = [[UILabel alloc] init];
-            msgLabel.textColor = _msgColor;
-            msgLabel.textAlignment = 1;
-            msgLabel.numberOfLines = 0;
-        }
         [backgroundView addSubview:msgLabel];
         msgLabel.text = _message;
         UIFont *font = [UIFont systemFontOfSize:13];
@@ -154,33 +150,35 @@ static NSString *myId = @"AlertViewTableCell";
         frame.origin.y = (self.frame.size.height - frame.size.height)/2;
         backgroundView.frame = frame;
     }else{
-        if (!_buttonsArray || _buttonsArray.count == 0) {
-            _buttonsArray = @[@"确定"];
-        }
         for (int index = 0; index < _buttonsArray.count; index ++) {
-            float width = backgroundView.frame.size.width / 2;
-            UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(index * backgroundView.frame.size.width / 2, height  + 1,_buttonsArray.count == 1 ? width * 2 : width , _buttonHeight)];
-            if (index == 0) {
-                button.frame = CGRectMake(0, height + 1, (_buttonsArray.count == 1 ? width * 2 : width) - 0.5, _buttonHeight);
+            float width = _buttonsArray.count == 1 ? backgroundView.frame.size.width : backgroundView.frame.size.width / 2  ;
+            if (_buttonsArray.count == 2 && index == 0) {
+                width -= 0.5;
             }
+
+            VscPressButton *button = [[VscPressButton alloc] initWithFrame:
+                                      CGRectMake(index * backgroundView.frame.size.width / 2,
+                                                 height  + 1,
+                                                 width ,
+                                                 _buttonHeight)];
             button.tag = 1000 + index;
             [button addTarget:self action:@selector(alertButtonClick:) forControlEvents:64];
-            button.backgroundColor = [UIColor clearColor];
-            
-            UIImage *backImg = imageWithColor([[UIColor blackColor] colorWithAlphaComponent:0.05]);
-            [button setBackgroundImage:backImg forState:1<<0];
-            
-            UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
-            UIVisualEffectView *effectView = [[UIVisualEffectView alloc] initWithEffect:effect];
-            effectView.frame = button.frame;
-            
-            [backgroundView addSubview:effectView];
+//            button.backgroundColor = [UIColor clearColor];
+//            
+//            UIImage *backImg = imageWithColor([[UIColor blackColor] colorWithAlphaComponent:0.05]);
+//            [button setBackgroundImage:backImg forState:1<<0];
+            button.highliColor = [[UIColor blackColor] colorWithAlphaComponent:0.05];
+//            UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
+//            UIVisualEffectView *effectView = [[UIVisualEffectView alloc] initWithEffect:effect];
+//            effectView.frame = button.frame;
+//            
+//            [backgroundView addSubview:effectView];
             [backgroundView addSubview: button];
             
             NSString *title = _buttonsArray[index];
-            [button setTitle:title forState:0];
-            [button setTitleColor:UIColorFromRGB(0x4b95f2) forState:0];
-            
+//            [button setTitle:title forState:0];
+//            [button setTitleColor:UIColorFromRGB(0x4b95f2) forState:0];
+            button.text = title;
             VscButton *cell = [[VscButton alloc] init];
             BOOL customDesign = NO;
             if (self.dataSource) {
@@ -197,13 +195,16 @@ static NSString *myId = @"AlertViewTableCell";
                     color = UIColorFromRGB(0x4b95f2);
                 }
                 if (cell.isBold) {
-                    button.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
+//                    button.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
+                    button.isBold = YES;
                 }
                 [button setTitleColor:color forState:0];
                 if (cell.image) {
-                    [button setImage:cell.image forState:0];
-                    [button setImageEdgeInsets:UIEdgeInsetsMake(10,0,10,-25)];
-                    button.imageView.contentMode = UIViewContentModeScaleAspectFit;
+//                    [button setImage:cell.image forState:0];
+//                    [button setImageEdgeInsets:UIEdgeInsetsMake(10,-12,10,-25)];
+//                    button.imageView.contentMode = UIViewContentModeScaleAspectFit;
+//                    [button setTitleEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+                    button.image = cell.image;
                 }
             }
         }
@@ -224,11 +225,9 @@ static NSString *myId = @"AlertViewTableCell";
     [self removeMyself];
 }
 -(void)vscAlertBlock:(VscAlertBlock)block{
-//    _alertBlock = block;
     _alertTempBlock = block;
 }
 -(void)vscCustomButton:(VscButtonBlock)block{
-//    _btnBlock = block;
     _btnTempBlock = block;
 }
 -(void)show{
@@ -296,74 +295,4 @@ static NSString *myId = @"AlertViewTableCell";
     [self removeMyself];
 }
 
-@end
-#pragma mark - VscButton代码
-
-@interface VscButton (){
-    BOOL _isBold;
-    UIVisualEffectView *effectView;
-}
-@end
-@implementation VscButton
--(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
-    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        imgView = [[UIImageView alloc] init];
-        displayLabel = [[UILabel alloc] init];
-        displayLabel.textColor = UIColorFromRGB(0x4b95f2);
-        displayLabel.backgroundColor = [UIColor clearColor];
-        displayLabel.textAlignment = 1;
-        displayLabel.font = [UIFont systemFontOfSize:18];
-        [self.contentView addSubview:displayLabel];
-    }
-    return self;
-}
--(void)defaultStyle{
-    displayLabel.textColor = UIColorFromRGB(0x4b95f2);
-    self.image = nil;
-    self.isBold = NO;
-}
--(void)displayFrames{
-    CGSize size = CGSizeMake(self.contentView.frame.size.width - 30, self.contentView.frame.size.height);
-    CGSize fitSize = [displayLabel sizeThatFits:size];
-    displayLabel.frame = CGRectMake((self.contentView.frame.size.width - fitSize.width)/2, (self.contentView.frame.size.height - fitSize.height)/2, fitSize.width, fitSize.height);
-    imgView.frame = CGRectMake(displayLabel.frame.origin.x - 30, 5, 30, self.contentView.frame.size.height - 10);
-    imgView.contentMode = UIViewContentModeScaleAspectFit;
-
-    if (!effectView) {
-        UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
-        effectView = [[UIVisualEffectView alloc] initWithEffect:effect];
-        effectView.frame = CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height-0.5);
-        [self.contentView insertSubview:effectView atIndex:0];
-    }
-}
--(void)setIsBold:(BOOL)isBold{
-    if (isBold) {
-        displayLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
-    }else{
-        displayLabel.font = [UIFont fontWithName:@"Helvetica" size:18];
-    }
-    _isBold = isBold;
-}
--(BOOL)isBold{
-    return _isBold;
-}
--(NSString *)text{
-    return displayLabel.text;
-}
--(void)setText:(NSString *)text{
-    displayLabel.text = [text copy];
-}
--(void)setImage:(UIImage *)image{
-    imgView.image = image;
-    [self.contentView addSubview:imgView];
-}
--(UIImage *)image{
-    return imgView.image;
-}
--(void)setTextColor:(UIColor *)textColor{
-    displayLabel.textColor = textColor;
-}
--(UIColor *)textColor{
-    return displayLabel.textColor;
-}
 @end
