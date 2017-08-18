@@ -83,7 +83,7 @@ static NSString *myId = @"AlertViewTableCell";
     backgroundView.clipsToBounds = YES;
     [self addSubview:backgroundView];
     
-    titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, backgroundView.frame.size.width - 40, 30)];
+    titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 15, backgroundView.frame.size.width - 40, 30)];
     titleLabel.textColor = _titleColor;
     titleLabel.textAlignment = 1;
     titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
