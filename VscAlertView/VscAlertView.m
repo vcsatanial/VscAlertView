@@ -114,7 +114,7 @@ static NSString *myId = @"AlertViewTableCell";
         }
         msgLabel.frame = CGRectMake(15, y, backgroundView.frame.size.width-30, labelSize.height);
     }
-    if (!msgLabel) {
+    if (_message.length == 0) {
         lineY = CGRectGetMaxY(titleLabel.frame) + 25;
     }else{
         lineY = CGRectGetMaxY(msgLabel.frame) + 25;
@@ -126,7 +126,7 @@ static NSString *myId = @"AlertViewTableCell";
 }
 -(void)displayButtons{
     CGFloat height = CGRectGetMaxY(msgLabel.frame) + 25;
-    if (!msgLabel) {
+    if (_message.length == 0) {
         height = CGRectGetMaxY(titleLabel.frame) + 25;
     }
     if (_buttonsArray.count > 2) {
