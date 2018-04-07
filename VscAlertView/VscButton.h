@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-@class VscAlertView;
 @interface VscButton : UITableViewCell{
 @public
     //可自定义的imgView
@@ -23,8 +22,5 @@
 @property (nonatomic,strong) UIColor *textColor;
 //是否文本加粗
 @property (nonatomic,assign) BOOL isBold;
-//获取到使用VscButton的VscAlertView
-@property (nonatomic,weak) VscAlertView *superAlertView;
 -(void)defaultStyle;
--(void)displayFrames;
 @end

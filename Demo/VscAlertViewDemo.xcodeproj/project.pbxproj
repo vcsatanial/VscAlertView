@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7C90F6142078DD16002AEC3C /* VscItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C90F6132078DD16002AEC3C /* VscItem.m */; };
 		A07BAF5D1EEE717C00E14D3B /* VscAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = A07BAF571EEE717C00E14D3B /* VscAlertView.m */; };
 		A07BAF5E1EEE717C00E14D3B /* VscButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A07BAF591EEE717C00E14D3B /* VscButton.m */; };
 		A07BAF5F1EEE717C00E14D3B /* VscPressButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A07BAF5C1EEE717C00E14D3B /* VscPressButton.m */; };
@@ -41,6 +42,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7C90F6122078DD16002AEC3C /* VscItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VscItem.h; path = ../../../../../Visac/Documents/Git/VscAlertView/VscAlertView/VscItem.h; sourceTree = "<group>"; };
+		7C90F6132078DD16002AEC3C /* VscItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = VscItem.m; path = ../../../../../Visac/Documents/Git/VscAlertView/VscAlertView/VscItem.m; sourceTree = "<group>"; };
 		A07BAF561EEE717C00E14D3B /* VscAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VscAlertView.h; sourceTree = "<group>"; };
 		A07BAF571EEE717C00E14D3B /* VscAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VscAlertView.m; sourceTree = "<group>"; };
 		A07BAF581EEE717C00E14D3B /* VscButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VscButton.h; sourceTree = "<group>"; };
@@ -104,6 +107,8 @@
 				A07BAF5A1EEE717C00E14D3B /* VscColorHeader.h */,
 				A07BAF5B1EEE717C00E14D3B /* VscPressButton.h */,
 				A07BAF5C1EEE717C00E14D3B /* VscPressButton.m */,
+				7C90F6122078DD16002AEC3C /* VscItem.h */,
+				7C90F6132078DD16002AEC3C /* VscItem.m */,
 			);
 			name = VscAlertView;
 			path = ../../VscAlertView;
@@ -318,6 +323,7 @@
 				A082BC7B1EE7E28100819FD7 /* AppDelegate.m in Sources */,
 				A07BAF5F1EEE717C00E14D3B /* VscPressButton.m in Sources */,
 				A082BC781EE7E28100819FD7 /* main.m in Sources */,
+				7C90F6142078DD16002AEC3C /* VscItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

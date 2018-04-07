@@ -38,6 +38,7 @@ typedef VscButton *(^VscButtonBlock)(VscButton *button,NSInteger buttonIndex);
 @property (nonatomic,weak) id<VscAlertDataSource>dataSource;
 //按键的数组
 @property (nonatomic,strong,readonly) NSArray *buttonsArray;
+
 /**
  初始化方法
 
@@ -50,7 +51,7 @@ typedef VscButton *(^VscButtonBlock)(VscButton *button,NSInteger buttonIndex);
 /**
  点击按键的Block回调方法
 
- @param block Block中包含一个__weak VscAlertView(可持有此VscAlertView<做成属性>)
+ @param block Block中包含一个VscAlertView(可持有此VscAlertView<做成属性>)
  */
 -(void)vscAlertBlock:(VscAlertBlock)block;
 
@@ -61,7 +62,7 @@ typedef VscButton *(^VscButtonBlock)(VscButton *button,NSInteger buttonIndex);
 -(void)vscCustomButton:(VscButtonBlock)block;
 
 /**
- 调用此方法 VscAlertView即会出现 请修改样式的工作均在此方法之前执行
+ 调用此方法 VscAlertView即会出现 请修改属性的工作均在此方法之前执行
  */
 -(void)show;
 @end

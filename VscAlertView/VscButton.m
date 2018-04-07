@@ -28,15 +28,21 @@
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         imgView = [[UIImageView alloc] init];
+        imgView.contentMode = UIViewContentModeScaleAspectFit;
         displayLabel = [[UILabel alloc] init];
         displayLabel.textColor = UIColorFromRGB(0x4b95f2);
         displayLabel.backgroundColor = [UIColor clearColor];
         displayLabel.textAlignment = 1;
+        displayLabel.numberOfLines = 0;
         displayLabel.font = [UIFont systemFontOfSize:18];
         self.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:displayLabel];
     }
     return self;
+}
+-(void)layoutSubviews{
+    [super layoutSubviews];
+    [self displayFrames];
 }
 -(void)defaultStyle{
     displayLabel.textColor = UIColorFromRGB(0x4b95f2);
@@ -48,14 +54,13 @@
     CGSize fitSize = [displayLabel sizeThatFits:size];
     displayLabel.frame = CGRectMake((self.contentView.frame.size.width - fitSize.width)/2, (self.contentView.frame.size.height - fitSize.height)/2, fitSize.width, fitSize.height);
     imgView.frame = CGRectMake(displayLabel.frame.origin.x - 30, 5, 30, self.contentView.frame.size.height - 10);
-    imgView.contentMode = UIViewContentModeScaleAspectFit;
     
     if (!effectView) {
         UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
         effectView = [[UIVisualEffectView alloc] initWithEffect:effect];
-        effectView.frame = CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height-0.5);
         [self.contentView insertSubview:effectView atIndex:0];
     }
+    effectView.frame = CGRectMake(0, 0, self.contentView.frame.size.width, self.contentView.frame.size.height-0.5);
 }
 -(void)setIsBold:(BOOL)isBold{
     if (isBold) {

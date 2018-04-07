@@ -8,6 +8,7 @@
 
 #import "VscAlertView.h"
 #import "VscColorHeader.h"
+#import "VscItem.h"
 
 UIImage *imageWithColor(UIColor *color){
     CGRect rect = CGRectMake(0, 0, 1.f, 1.f);
@@ -27,7 +28,7 @@ UIImage *imageWithColor(UIColor *color){
     NSString *_message;
     UITableView *_tableView;
     UIView *backgroundView;
-    CGFloat _buttonHeight;
+    NSMutableArray <VscItem *>*items;
 }
 @property (nonatomic,strong) VscAlertView *mySelf;
 //当不调用show方法同时调用Block时,为防止内存不能释放,增加栈block,当成功调用show时,将栈block转化成堆block(ARC)
@@ -38,9 +39,7 @@ UIImage *imageWithColor(UIColor *color){
 @end
 static NSString *myId = @"AlertViewTableCell";
 @implementation VscAlertView
--(instancetype)initWithTitle:(NSString *)title message:(NSString *)message
-                            buttonTitles:(NSString *)otherButtonTitles, ...{
-    
+-(instancetype)initWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSString *)otherButtonTitles, ...{
     self = [super initWithFrame:[UIScreen mainScreen].bounds];
     if (self) {
         [self initializeSettings];
@@ -48,30 +47,46 @@ static NSString *myId = @"AlertViewTableCell";
         _title  = [title copy];
         _message = [message copy];
         if (otherButtonTitles) {
+            items = @[].mutableCopy;
+            NSMutableArray *btns = @[].mutableCopy;
             NSString *arg = nil;
             va_list argumentList;
             
             NSMutableArray *array = [NSMutableArray arrayWithCapacity:0];
-            [array addObject:otherButtonTitles];
-            va_start(argumentList, otherButtonTitles);
-            
-            while ((arg = va_arg(argumentList, NSString *))) {
-                [array addObject:arg];
+            if (otherButtonTitles) {
+                VscItem *item = [[VscItem alloc] init];
+                item.title = otherButtonTitles;
+                [items addObject:item];
+                [array addObject:otherButtonTitles];
+                
+                va_start(argumentList, otherButtonTitles);
+                while ((arg = va_arg(argumentList, NSString *))) {
+                    VscItem *item = [[VscItem alloc] init];
+                    item.title = arg;
+                    [items addObject:item];
+                    [btns addObject:arg];
+                }
+                va_end(argumentList);
             }
-            va_end(argumentList);
-            _buttonsArray = [array copy];
-        }
-        if (!_buttonsArray || _buttonsArray.count == 0) {
-            _buttonsArray = @[@"确定"];
+        }else{
+            VscItem *item = [[VscItem alloc] init];
+            item.title = @"确定";
+            [items addObject:item];
         }
     }
     return self;
+}
+-(NSArray *)buttonsArray{
+    NSMutableArray *btns = @[].mutableCopy;
+    for (VscItem *item in items) {
+        [btns addObject:item.title];
+    }
+    return btns.copy;
 }
 -(void)initializeSettings{
     self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.3];
     self.windowLevel = UIWindowLevelAlert - 1;
     
-    _buttonHeight = 44;
     _titleColor = [UIColor blackColor];
     _msgColor = [UIColor blackColor];
     
@@ -129,9 +144,9 @@ static NSString *myId = @"AlertViewTableCell";
     if (_message.length == 0) {
         height = CGRectGetMaxY(titleLabel.frame) + 25;
     }
-    if (_buttonsArray.count > 2) {
-        BOOL lessThanSix = _buttonsArray.count <= 6;
-        CGFloat tableHeight = lessThanSix ? _buttonHeight * _buttonsArray.count : _buttonHeight * 6;
+    if (items.count > 2) {
+        BOOL lessThanSix = items.count <= 6;
+        CGFloat tableHeight = lessThanSix ? 44 * items.count : 44 * 6;
         if (!_tableView) {
             _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, height + 0.5, backgroundView.frame.size.width, tableHeight) style:UITableViewStylePlain];
             _tableView.backgroundColor = [UIColor clearColor];
@@ -150,41 +165,32 @@ static NSString *myId = @"AlertViewTableCell";
         frame.origin.y = (self.frame.size.height - frame.size.height)/2;
         backgroundView.frame = frame;
     }else{
-        for (int index = 0; index < _buttonsArray.count; index ++) {
-            float width = _buttonsArray.count == 1 ? backgroundView.frame.size.width : backgroundView.frame.size.width / 2  ;
-            if (_buttonsArray.count == 2 && index == 0) {
+        for (int index = 0; index < items.count; index ++) {
+            float width = items.count == 1 ? backgroundView.frame.size.width : backgroundView.frame.size.width / 2  ;
+            if (items.count == 2 && index == 0) {
                 width -= 0.5;
             }
-            VscPressButton *button = [[VscPressButton alloc] initWithFrame:
-                                      CGRectMake(index * backgroundView.frame.size.width / 2,height  + 1,width ,_buttonHeight)];
+            VscPressButton *button = [[VscPressButton alloc] initWithFrame:CGRectMake(index * backgroundView.frame.size.width / 2,height  + 1,width ,44)];
             button.tag = 1000 + index;
             [button addTarget:self action:@selector(alertButtonClick:) forControlEvents:64];
             button.highliColor = [[UIColor blackColor] colorWithAlphaComponent:0.05];
             [backgroundView addSubview: button];
-            NSString *title = _buttonsArray[index];
+            NSString *title = items[index].title;
             button.text = title;
             VscButton *cell = [[VscButton alloc] init];
-            BOOL customDesign = NO;
+            cell.textColor = UIColorFromRGB(0x4b95f2);
             if (self.dataSource) {
                 cell = [self.dataSource vsc_alertView:self buttonNeedToResign:cell buttonIndex:index];
-                customDesign = YES;
             }
             if (self.btnBlock) {
                 cell = self.btnBlock(cell,index);
-                customDesign = YES;
             }
-            if (customDesign) {
-                UIColor *color = cell.textColor;
-                if (!color) {
-                    color = UIColorFromRGB(0x4b95f2);
-                }
-                button.isBold = cell.isBold;
-                [button setTitleColor:color forState:0];
-                button.image = cell.image;
-            }
+            button.isBold = cell.isBold;
+            button.image = cell.image;
+            [button setTitleColor:cell.textColor forState:0];
         }
         CGRect frame = backgroundView.frame;
-        frame.size.height = height + _buttonHeight + 0.5;
+        frame.size.height = height + 44 + 0.5;
         frame.origin.y = (self.frame.size.height - frame.size.height)/2;
         backgroundView.frame = frame;
     }
@@ -234,18 +240,26 @@ static NSString *myId = @"AlertViewTableCell";
     self.alertBlock = nil;
     self.hidden = YES;
 }
-#pragma mark TableView
+#pragma mark - TableView
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return _buttonHeight;
+    VscItem *item = items[indexPath.row];
+    if (item.height == 0) {
+        CGFloat height = [item.title boundingRectWithSize:CGSizeMake(backgroundView.frame.size.width - 30, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:18]} context:NULL].size.height + 21;
+        if (height > 44) {
+            item.height = height;
+        }else{
+            item.height = 44;
+        }
+    }
+    return item.height;
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return _buttonsArray.count;
+    return items.count;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     VscButton *cell = [tableView dequeueReusableCellWithIdentifier:myId];
-    cell.superAlertView = self;
     [cell defaultStyle];
-    cell.text = _buttonsArray[indexPath.row];
+    cell.text = items[indexPath.row].title;
     if (self.dataSource) {
         cell = [self.dataSource vsc_alertView:self buttonNeedToResign:cell buttonIndex:indexPath.row];
     }
@@ -253,10 +267,6 @@ static NSString *myId = @"AlertViewTableCell";
         cell = self.btnBlock(cell,indexPath.row);
     }
     return cell;
-}
--(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
-    VscButton *vscCell = (VscButton *)cell;
-    [vscCell displayFrames];
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (self.delegate) {
