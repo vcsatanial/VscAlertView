@@ -37,7 +37,7 @@ typedef VscButton *(^VscButtonBlock)(VscButton *button,NSInteger buttonIndex);
 //数据源 可通过数据源或者Block
 @property (nonatomic,weak) id<VscAlertDataSource>dataSource;
 //按键的数组
-@property (nonatomic,strong,readonly) NSArray *buttonsArray;
+@property (nonatomic,strong) NSArray *buttonsArray;
 
 /**
  初始化方法

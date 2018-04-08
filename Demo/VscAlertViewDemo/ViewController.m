@@ -50,7 +50,15 @@
     [self.view addSubview:button];
 }
 -(void)showAlertView{
-    VscAlertView *alertView1 = [[VscAlertView alloc] initWithTitle:@"收到一个错误提示" message:@"因为你已经花光所有点卷,如想继续使用,需要充值" buttonTitles:@"确定",@"取消",nil];
+    NSArray *array = @[@"1",@"2",@"3"];
+    NSMutableString *muStr = @"".mutableCopy;
+    for (NSString *str in array) {
+        [muStr appendString:str];
+        [muStr appendString:@","];
+    }
+    VscAlertView *alertView1 = [[VscAlertView alloc] initWithTitle:@"收到一个错误提示" message:@"因为你已经花光所有点卷,如想继续使用,需要充值" buttonTitles:muStr,nil];
+//    alertView1.buttonsArray = array;
+//    VscAlertView *alertView1 = [[VscAlertView alloc] initWithTitle:@"收到一个错误提示" message:@"因为你已经花光所有点卷,如想继续使用,需要充值" buttonTitles:@"确定",@"取消",nil];
     alertView1.titleColor = [UIColor redColor];
     alertView1.msgColor = [UIColor orangeColor];
     [alertView1 vscAlertBlock:^(VscAlertView *alertView, NSInteger buttonIndex) {

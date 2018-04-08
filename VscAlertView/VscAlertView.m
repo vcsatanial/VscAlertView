@@ -39,6 +39,7 @@ UIImage *imageWithColor(UIColor *color){
 @end
 static NSString *myId = @"AlertViewTableCell";
 @implementation VscAlertView
+@synthesize buttonsArray = _buttonsArray;
 -(instancetype)initWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSString *)otherButtonTitles, ...{
     self = [super initWithFrame:[UIScreen mainScreen].bounds];
     if (self) {
@@ -46,8 +47,8 @@ static NSString *myId = @"AlertViewTableCell";
         
         _title  = [title copy];
         _message = [message copy];
+        items = @[].mutableCopy;
         if (otherButtonTitles) {
-            items = @[].mutableCopy;
             NSMutableArray *btns = @[].mutableCopy;
             NSString *arg = nil;
             va_list argumentList;
@@ -77,11 +78,28 @@ static NSString *myId = @"AlertViewTableCell";
     return self;
 }
 -(NSArray *)buttonsArray{
-    NSMutableArray *btns = @[].mutableCopy;
-    for (VscItem *item in items) {
-        [btns addObject:item.title];
+    if (!_buttonsArray) {
+        NSMutableArray *btns = @[].mutableCopy;
+        for (VscItem *item in items) {
+            [btns addObject:item.title];
+        }
+        _buttonsArray = btns.copy;
     }
-    return btns.copy;
+    return _buttonsArray;
+}
+-(void)setButtonsArray:(NSArray *)buttonsArray{
+    [items removeAllObjects];
+    _buttonsArray = buttonsArray;
+    for (NSString *string in buttonsArray) {
+        VscItem *item = [[VscItem alloc] init];
+        item.title = string;
+        [items addObject:item];
+    }
+    if (items.count == 0) {
+        VscItem *item = [[VscItem alloc] init];
+        item.title = @"确定";
+        [items addObject:item];
+    }
 }
 -(void)initializeSettings{
     self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.3];
