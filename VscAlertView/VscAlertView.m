@@ -163,9 +163,17 @@ static NSString *myId = @"AlertViewTableCell";
         height = CGRectGetMaxY(titleLabel.frame) + 25;
     }
     if (items.count > 2) {
-        BOOL lessThanSix = items.count <= 6;
-        CGFloat tableHeight = lessThanSix ? 44 * items.count : 44 * 6;
-        tableHeight = MAX(_height, tableHeight);
+        CGFloat allHeight = 0;
+        for (VscItem *item in items) {
+            CGFloat height = [item.title boundingRectWithSize:CGSizeMake(backgroundView.frame.size.width - 30, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:18]} context:NULL].size.height + 21;
+            if (height > 44) {
+                item.height = height;
+            }else{
+                item.height = 44;
+            }
+            allHeight += item.height;
+        }
+        CGFloat tableHeight = MIN(_height, allHeight);
         if (!_tableView) {
             _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, height + 0.5, backgroundView.frame.size.width, tableHeight) style:UITableViewStylePlain];
             _tableView.backgroundColor = [UIColor clearColor];
