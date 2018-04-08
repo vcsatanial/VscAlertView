@@ -165,6 +165,7 @@ static NSString *myId = @"AlertViewTableCell";
     if (items.count > 2) {
         BOOL lessThanSix = items.count <= 6;
         CGFloat tableHeight = lessThanSix ? 44 * items.count : 44 * 6;
+        tableHeight = MAX(_height, tableHeight);
         if (!_tableView) {
             _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, height + 0.5, backgroundView.frame.size.width, tableHeight) style:UITableViewStylePlain];
             _tableView.backgroundColor = [UIColor clearColor];

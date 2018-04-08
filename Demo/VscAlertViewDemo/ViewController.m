@@ -50,15 +50,7 @@
     [self.view addSubview:button];
 }
 -(void)showAlertView{
-    NSArray *array = @[@"1",@"2",@"3"];
-    NSMutableString *muStr = @"".mutableCopy;
-    for (NSString *str in array) {
-        [muStr appendString:str];
-        [muStr appendString:@","];
-    }
-    VscAlertView *alertView1 = [[VscAlertView alloc] initWithTitle:@"收到一个错误提示" message:@"因为你已经花光所有点卷,如想继续使用,需要充值" buttonTitles:muStr,nil];
-//    alertView1.buttonsArray = array;
-//    VscAlertView *alertView1 = [[VscAlertView alloc] initWithTitle:@"收到一个错误提示" message:@"因为你已经花光所有点卷,如想继续使用,需要充值" buttonTitles:@"确定",@"取消",nil];
+    VscAlertView *alertView1 = [[VscAlertView alloc] initWithTitle:@"收到一个错误提示" message:@"因为你已经花光所有点卷,如想继续使用,需要充值" buttonTitles:@"确定",@"取消",nil];
     alertView1.titleColor = [UIColor redColor];
     alertView1.msgColor = [UIColor orangeColor];
     [alertView1 vscAlertBlock:^(VscAlertView *alertView, NSInteger buttonIndex) {
@@ -76,6 +68,7 @@
 }
 -(void)showAlert2{
     VscAlertView *alertView2 = [[VscAlertView alloc] initWithTitle:@"充值提示" message:@"请选择充值金额" buttonTitles:@"充值512元",@"充值1024元",@"充值2048元",@"充值4096元",@"充值8192元",@"充值16384元",@"充值32768元",@"充值65536元",@",太贵了,不充了,太贵了,不充了,太贵了,不充了,太贵了,不充了,太贵了,不充了",nil];
+    alertView2.height = 400;
     [alertView2 vscAlertBlock:^(VscAlertView *alertView, NSInteger buttonIndex) {
         if (buttonIndex == alertView.buttonsArray.count - 1) {
             [self showAlert3];
