@@ -40,6 +40,8 @@ typedef VscButton *(^VscButtonBlock)(VscButton *button,NSInteger buttonIndex);
 @property (nonatomic,strong) NSArray *buttonsArray;
 //显示的提示框的高度(不设定默认为200)
 @property (nonatomic,assign) CGFloat height;
+//如果按钮只有2个 依然使用table选择样式
+@property (nonatomic,assign) BOOL useTableStyle;
 
 /**
  初始化方法

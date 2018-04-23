@@ -162,7 +162,7 @@ static NSString *myId = @"AlertViewTableCell";
     if (_message.length == 0) {
         height = CGRectGetMaxY(titleLabel.frame) + 25;
     }
-    if (items.count > 2) {
+    if (items.count > 2 || _useTableStyle) {
         CGFloat allHeight = 0;
         for (VscItem *item in items) {
             CGFloat height = [item.title boundingRectWithSize:CGSizeMake(backgroundView.frame.size.width - 30, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:18]} context:NULL].size.height + 21;
