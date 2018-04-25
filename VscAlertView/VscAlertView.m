@@ -29,6 +29,7 @@ UIImage *imageWithColor(UIColor *color){
     UITableView *_tableView;
     UIView *backgroundView;
     NSMutableArray <VscItem *>*items;
+    UITextField *textField;
 }
 @property (nonatomic,strong) VscAlertView *mySelf;
 //当不调用show方法同时调用Block时,为防止内存不能释放,增加栈block,当成功调用show时,将栈block转化成堆block(ARC)
@@ -134,23 +135,33 @@ static NSString *myId = @"AlertViewTableCell";
 }
 -(void)displayMessage{
     float lineY = 0.f;
-    if (_message && ![_message isEqualToString:@""]) {
-        [backgroundView addSubview:msgLabel];
-        msgLabel.text = _message;
-        UIFont *font = [UIFont systemFontOfSize:13];
-        CGSize size = CGSizeMake(backgroundView.frame.size.width - 30, MAXFLOAT);
-        msgLabel.font = font;
-        CGSize labelSize = [msgLabel sizeThatFits:size];
-        CGFloat y = CGRectGetMaxY(titleLabel.frame);
-        if (y == 0) {
-            y += 25;
-        }
-        msgLabel.frame = CGRectMake(15, y, backgroundView.frame.size.width-30, labelSize.height);
+    CGFloat y = CGRectGetMaxY(titleLabel.frame);
+    if (y == 0) {
+        y += 25;
     }
-    if (_message.length == 0) {
-        lineY = CGRectGetMaxY(titleLabel.frame) + 25;
+    if (_useTextField) {
+        textField = [[UITextField alloc] init];
+        textField.placeholder = @"请输入";
+        textField.layer.borderColor = [UIColor blackColor].CGColor;
+        textField.layer.borderWidth = 0.5;
+        textField.frame = CGRectMake(15, y + 5, backgroundView.frame.size.width-30, 22);
+        [backgroundView addSubview:textField];
+        lineY = CGRectGetMaxY(textField.frame) + 20;
     }else{
-        lineY = CGRectGetMaxY(msgLabel.frame) + 25;
+        if (_message && ![_message isEqualToString:@""]) {
+            [backgroundView addSubview:msgLabel];
+            msgLabel.text = _message;
+            UIFont *font = [UIFont systemFontOfSize:13];
+            CGSize size = CGSizeMake(backgroundView.frame.size.width - 30, MAXFLOAT);
+            msgLabel.font = font;
+            CGSize labelSize = [msgLabel sizeThatFits:size];
+            msgLabel.frame = CGRectMake(15, y, backgroundView.frame.size.width-30, labelSize.height);
+        }
+        if (_message.length == 0) {
+            lineY = CGRectGetMaxY(titleLabel.frame) + 25;
+        }else{
+            lineY = CGRectGetMaxY(msgLabel.frame) + 25;
+        }
     }
     UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
     UIVisualEffectView *effectView = [[UIVisualEffectView alloc] initWithEffect:effect];
@@ -162,6 +173,11 @@ static NSString *myId = @"AlertViewTableCell";
     if (_message.length == 0) {
         height = CGRectGetMaxY(titleLabel.frame) + 25;
     }
+    if (_useTextField) {
+        height = CGRectGetMaxY(textField.frame) + 20;
+    }
+
+    
     if (items.count > 2 || _useTableStyle) {
         CGFloat allHeight = 0;
         for (VscItem *item in items) {
@@ -304,5 +320,7 @@ static NSString *myId = @"AlertViewTableCell";
     }
     [self removeMyself];
 }
-
+-(NSString *)textFieldString{
+    return textField.text;
+}
 @end

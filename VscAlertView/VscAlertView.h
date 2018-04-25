@@ -42,6 +42,10 @@ typedef VscButton *(^VscButtonBlock)(VscButton *button,NSInteger buttonIndex);
 @property (nonatomic,assign) CGFloat height;
 //如果按钮只有2个 依然使用table选择样式
 @property (nonatomic,assign) BOOL useTableStyle;
+//message部分将使用textfield
+@property (nonatomic,assign) BOOL useTextField;
+//textfield中的字段
+@property (nonatomic,copy,readonly) NSString *textFieldString;
 
 /**
  初始化方法

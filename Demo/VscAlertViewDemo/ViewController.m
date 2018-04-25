@@ -69,7 +69,9 @@
 -(void)showAlert2{
     VscAlertView *alertView2 = [[VscAlertView alloc] initWithTitle:@"充值提示" message:@"请选择充值金额" buttonTitles:@"充值512元",@"充值1024元",@"充值2048元",@"充值4096元",@"充值8192元",@"充值16384元",@"充值32768元",@"充值65536元",@",太贵了,不充了,太贵了,不充了,太贵了,不充了,太贵了,不充了,太贵了,不充了",nil];
     alertView2.height = 600;
+    alertView2.useTextField = YES;
     [alertView2 vscAlertBlock:^(VscAlertView *alertView, NSInteger buttonIndex) {
+        NSLog(@"%@",alertView.textFieldString);
         if (buttonIndex == alertView.buttonsArray.count - 1) {
             [self showAlert3];
         }else{
