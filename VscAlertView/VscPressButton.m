@@ -42,6 +42,10 @@ UIImage *getImageWithColor(UIColor *color){
     [self addSubview:label];
     return self;
 }
+-(void)setTitleColor:(UIColor *)color forState:(UIControlState)state{
+    [super setTitleColor:color forState:state];
+    label.textColor = color;
+}
 -(void)setIsBold:(BOOL)isBold{
     _isBold = isBold;
     if (isBold) {

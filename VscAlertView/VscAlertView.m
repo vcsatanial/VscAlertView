@@ -49,6 +49,7 @@ static NSString *myId = @"AlertViewTableCell";
         _title  = [title copy];
         _message = [message copy];
         items = @[].mutableCopy;
+        _height = 200;
         if (otherButtonTitles) {
             NSMutableArray *btns = @[].mutableCopy;
             NSString *arg = nil;
